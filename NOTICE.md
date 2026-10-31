@@ -1,0 +1,3 @@
+# Source and license notice
+
+Fitbit (wizard-fitbit) started from the WHOOP connector (wizard-whoop), itself from Wizard App Manager's hello-wizard reference template (GPL-3.0-only), and keeps its canonical Wizard style snapshot (`web/boot.js`, `web/wizard-tokens.css`, `web/wizard-ui.css`, `web/wizard-sheet.js`, pinned by `appearance-provenance.json`) unchanged. The view loads the shared `/wizard-os-home/core/app-client.js`. The server is Python standard library only. Fitbit, Pixel and Google are trademarks of Google LLC; this app uses the public Google Health API with the owner's own Google Cloud project and OAuth client and is not affiliated with or endorsed by Google. The icon is an original generic tracker drawing. Distributed under GPL-3.0-only; no warranty.

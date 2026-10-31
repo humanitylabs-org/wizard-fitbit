@@ -1,0 +1,6 @@
+{
+  "request": "Fitbit connector: Google Health API, guided in-app setup with the owner's own Google Cloud project, OAuth PKCE paste-back, synced copy offered through the health-data contract",
+  "template": "hello-wizard",
+  "state": "public_repo",
+  "name": "Fitbit"
+}

@@ -1,0 +1,11 @@
+/* Preserve the shared-function template's pre-host light fallback without
+ * changing the canonical style snapshot or implementing theme state. */
+html:not(.wz-hosted) body { background: var(--canvas); }
+@media (prefers-color-scheme: light) {
+  html:not([data-color-scheme]) {
+    --wz-text: #1a1933; --wz-text-secondary: #484560;
+    --wz-text-muted: #66617a; --wz-border: #d4cfde;
+    --wz-accent: #6844aa; --wz-on-accent: #ffffff;
+    --wz-base: #faf8fd; --wz-danger: #b42318; color-scheme: light;
+  }
+}

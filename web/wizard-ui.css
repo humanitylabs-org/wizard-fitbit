@@ -1,0 +1,169 @@
+/* Wizard UI kit for generated apps (style/ canonical source, v1).
+ *
+ * Rule 1: a hosted app paints NO canvas. In a window or fullscreen the shell's window glass is the
+ *         canvas, exactly as it is for Chats. Only a standalone tab paints the skin's background.
+ * Rule 2: speak Chats' visual language: system UI type at the shell's sizes, ink / ink-2 / ink-3
+ *         hierarchy, hairline separators, faint tinted fills instead of opaque cards, pill inputs,
+ *         a round accent action. Every value derives from the appearance v1 roles (--wz-*), so all
+ *         the five accepted skins and future shell-approved skins flow through without per-app colour work.
+ * Rule 3: layout and content stay the app's own. Use these classes; add app styles in styles.css.
+ * Rule 4: look only. Talking to an agent is the real Chats thread (WizardApp.nav.openThread), never a
+ *         composer or transcript built from these classes (wizard-ux docs/COMPONENTS.md).
+ * Rule 5: skins may restyle these classes. Hosted apps load the live copy of this kit from the shell
+ *         (/wizard-os-home/kit/wizard-ui.css) and the active skin's stylesheets after the app's own.
+ *
+ * Values mirror web/core/chats.css and core/base.css in Wizard UX (ch-row, ch-sec-h). */
+
+:root {
+  --ink: var(--wz-text); --ink-2: var(--wz-text-secondary); --ink-3: var(--wz-text-muted);
+  --line-2: var(--wz-border); --line: color-mix(in srgb, var(--line-2) 55%, transparent);
+  --fill: var(--wz-surface); --fill-2: var(--wz-surface-raised);
+  --accent: var(--wz-accent); --on-accent: var(--wz-on-accent); --accent-soft: var(--wz-accent-soft);
+  --canvas: var(--wz-base); --danger: var(--wz-danger);
+  --r: var(--wz-radius); --r-tile: var(--wz-radius-tile); --r-pill: var(--wz-radius-pill);
+  --ease: var(--wz-ease); --font: var(--wz-font-ui);
+}
+html[data-color-scheme="light"] { color-scheme: light; --danger: var(--ink); }
+html[data-skin="signal"] .wz-sec-h { font-family: var(--wz-font-mono); letter-spacing: .08em; }
+html { background: var(--wz-base); }
+html.wz-hosted, html[data-wz-hosted] { background: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body { font: 15px/1.4 var(--font); color: var(--ink); background: transparent; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+html[data-presentation="standalone"]:not(.wz-hosted) body { background: var(--canvas); }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wz-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- frame: head / scroll / footer ---------- */
+/* The window is the page (APP-DESIGN-RULES.md rule 1-2): no max-width; columns grow with the window, measured on .wz-app. */
+.wz-app { --wz-gutter: 12px; display: flex; flex-direction: column; height: 100%; container: wz-app / inline-size; }
+@container wz-app (min-width: 600px) { .wz-scroll, .wz-head { --wz-gutter: 20px; } }
+@container wz-app (min-width: 960px) { .wz-scroll, .wz-head { --wz-gutter: 28px; } }
+.wz-head { flex: none; display: flex; align-items: flex-end; gap: 12px; padding: calc(var(--wos-cutout, 0px) + 18px) 18px 6px; }
+.wz-head h1 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 750; letter-spacing: -.02em; }
+.wz-head p { margin: 0 0 3px auto; font-size: 13px; color: var(--ink-3); }
+/* In a window the shell's title bar already names the app. */
+html[data-presentation="window"] .wz-head { display: none; }
+.wz-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 4px var(--wz-gutter, 10px) 12px; scrollbar-width: none; }
+.wz-scroll::-webkit-scrollbar { display: none; }
+
+/* ---------- section label: .ch-sec-h ---------- */
+.wz-sec + .wz-sec { border-top: 1px solid var(--line); }
+.wz-sec-h { display: flex; align-items: center; gap: 10px; margin: 0; padding: 12px 8px 8px; font-size: var(--wz-text-sm); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.wz-sec-h small { font-size: var(--wz-text-sm); font-weight: 800; letter-spacing: .05em; color: var(--ink-3); }
+.wz-count { margin-left: auto; padding: 1px 8px; border-radius: 99px; font-size: var(--wz-text-sm); letter-spacing: .04em; color: var(--ink-2); background: var(--fill); }
+.wz-count.all { color: var(--on-accent); background: var(--accent); }
+
+/* ---------- rows: .ch-row ---------- */
+.wz-list { list-style: none; margin: 0; padding: 0; }
+.wz-row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 8px; border-radius: var(--r); text-align: left; transition: background 140ms; }
+.wz-row:active { background: var(--fill); }
+@media (hover: hover) { .wz-row:hover { background: var(--fill); } }
+.wz-row .wz-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.wz-row .wz-main b { font-size: 15px; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.wz-row .wz-main small { font-size: 13px; color: var(--ink-3); }
+.wz-tile { flex: none; width: 36px; height: 36px; border-radius: var(--r-tile); display: grid; place-items: center; font-size: 18px; background: var(--fill); }
+
+/* round check, 26px inside a 36px tile-sized slot (the whole row is the 44px+ target) */
+.wz-check { flex: none; width: 36px; height: 36px; display: grid; place-items: center; }
+.wz-check i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line-2); display: grid; place-items: center; transition: background 160ms var(--ease), border-color 160ms, transform 220ms var(--ease); }
+.wz-check svg { width: 14px; height: 14px; fill: none; stroke: var(--on-accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity 120ms; }
+html[data-skin="signal"] .wz-check i { border-radius: 2px; }
+[aria-pressed="true"] .wz-check i { background: var(--accent); border-color: var(--accent); transform: scale(1.04); }
+[aria-pressed="true"] .wz-check svg { opacity: 1; }
+[aria-pressed="true"] .wz-main b { color: var(--ink-2); }
+.wz-row:disabled { opacity: .6; cursor: progress; }
+
+/* ---------- empty state ---------- */
+.wz-empty { padding: 44px 24px 24px; text-align: center; color: var(--ink-3); }
+.wz-empty .wz-tile { margin: 0 auto 14px; width: 52px; height: 52px; border-radius: 18px; font-size: 24px; color: var(--accent); }
+.wz-empty strong { display: block; margin-bottom: 4px; font-size: 16px; font-weight: 700; color: var(--ink); }
+.wz-empty p { margin: 0 auto; max-width: 30ch; font-size: 14px; line-height: 1.4; }
+
+/* ---------- single-line add field (forms such as "New habit"; never a chat) ----------
+ * .wz-compose / .wz-input / .wz-send are the pre-23 Oct 2026 names, kept so existing apps keep their look. */
+.wz-field-row, .wz-compose { flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); }
+.wz-field, .wz-input { flex: 1; min-width: 0; height: 44px; padding: 0 16px; border-radius: var(--r-pill); border: 1px solid var(--line-2); outline: 0; background: var(--fill); color: var(--ink); font-size: 15px; }
+.wz-field::placeholder, .wz-input::placeholder { color: var(--ink-3); }
+.wz-field:focus, .wz-input:focus { border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.wz-field-go, .wz-send { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); transition: opacity 140ms, transform 140ms; }
+html[data-skin="signal"] :is(.wz-field-go, .wz-send) { border-radius: 2px; }
+:is(.wz-field-go, .wz-send) svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+:is(.wz-field-go, .wz-send):disabled { opacity: .4; cursor: default; }
+:is(.wz-field-go, .wz-send):not(:disabled):active { transform: scale(.94); }
+
+/* ---------- status: errors are visible, confirmations are for screen readers ---------- */
+.wz-status { flex: none; margin: 0; padding: 0 18px 6px; min-height: 0; font-size: 13px; color: var(--danger); }
+.wz-status:empty { padding: 0; }
+.wz-status.note { color: var(--ink-2); text-align: center; }
+
+/* Staging hosts label the page once; a hosted app never repeats that badge. */
+html.wz-hosted #wiz-staging-tag { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+/* Shared semantic primitives: tinted surfaces, never a second full-page canvas. */
+.wz-card { padding: var(--wz-space-4); border: 1px solid var(--line); border-radius: var(--r); background: var(--fill); }
+.wz-card > :first-child { margin-top: 0; } .wz-card > :last-child { margin-bottom: 0; }
+.wz-chip { display: inline-flex; align-items: center; gap: var(--wz-space-2); padding: 4px 10px; border-radius: var(--r-pill); background: var(--fill); color: var(--ink-2); font-size: 13px; }
+.wz-bar { display: flex; align-items: center; gap: var(--wz-space-2); padding: 8px 10px; background: var(--wz-chrome); border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); }
+.wz-button { display: inline-flex; align-items: center; justify-content: center; border: 0; font: inherit; text-decoration: none; cursor: pointer; box-sizing: border-box; min-height: 44px; padding: 8px 16px; border-radius: var(--r-tile); background: var(--accent); color: var(--on-accent); font-weight: 600; }
+.wz-button.secondary, .wz-button.quiet { background: var(--fill); color: var(--ink); border: 1px solid var(--line-2); }
+.wz-button:disabled { opacity: .45; cursor: default; }
+/* ---------- layout helpers (rules 1, 2, 5) ---------- */
+.wz-grid { display: grid; gap: var(--wz-space-3); grid-template-columns: 1fr; }
+@container wz-app (min-width: 600px) { .wz-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container wz-app (min-width: 960px) { .wz-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
+.wz-prose { max-width: 72ch; }
+.wz-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--r-pill); font-size: 13px; font-weight: 650; color: var(--ink-2); background: var(--fill); white-space: nowrap; }
+.wz-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.wz-pill.ok { color: var(--wz-success, var(--accent)); }
+.wz-pill.warn { color: var(--wz-warning, var(--danger)); }
+/* Light schemes: deep green and burnt orange that pass 4.5:1 on pale pages (white, cream, sepia). */
+html[data-color-scheme="light"] .wz-pill.ok { color: var(--wz-success-light, var(--ink)); }
+html[data-color-scheme="light"] .wz-pill.warn { color: var(--wz-warning-light, var(--ink)); }
+.wz-pill.off { color: var(--ink-3); }
+.wz-meter { display: grid; gap: 4px; font-size: 13px; color: var(--ink-3); }
+.wz-meter > i { display: block; height: 6px; border-radius: 3px; background: var(--fill-2); overflow: hidden; }
+.wz-meter > i > b { display: block; height: 100%; width: var(--v, 0%); border-radius: inherit; background: var(--accent); }
+.wz-conn { display: flex; align-items: center; gap: var(--wz-space-3); padding: var(--wz-space-4); border: 1px solid var(--line); border-radius: var(--r); background: var(--fill); }
+.wz-conn .wz-tile { width: 48px; height: 48px; border-radius: 14px; }
+.wz-conn .wz-main { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.wz-conn .wz-main b { font-size: 17px; font-weight: 700; }
+.wz-conn .wz-main small { font-size: 13px; color: var(--ink-3); }
+.wz-actions { display: flex; flex-wrap: wrap; gap: var(--wz-space-2); padding: var(--wz-space-3) 0; }
+.wz-more { margin-top: var(--wz-space-4); color: var(--ink-3); font-size: 13px; }
+.wz-more > summary { cursor: pointer; padding: 8px; list-style: none; font-weight: 650; color: var(--ink-2); }
+.wz-more > summary::-webkit-details-marker { display: none; }
+
+/* ---------- the one pop-up (rule 4): bottom sheet when narrow, centred card when wide. Behaviour: style/sheet.js ---------- */
+.wz-sheet { color: var(--ink); background: var(--wz-panel); border: 1px solid var(--line-2); border-radius: var(--r); padding: var(--wz-space-4); width: min(520px, calc(100% - 24px)); max-width: none; max-height: 85%; overflow: auto; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.wz-sheet::backdrop { background: color-mix(in srgb, var(--wz-base) 74%, transparent); }
+.wz-sheet-x { position: sticky; top: 0; float: right; width: 36px; height: 36px; margin: -6px -6px 0 8px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); background: var(--fill); font-size: 18px; line-height: 1; z-index: 1; }
+.wz-sheet-x::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; } /* 44px touch target (APP-DESIGN-RULES rule 6) around the 36px visual */
+.wz-sheet-grip { display: none; }
+.wz-sheet > h2 { margin: 0 0 var(--wz-space-3); font-size: 17px; font-weight: 700; }
+@media (max-width: 599px) {
+  .wz-sheet { width: 100%; max-width: 100%; margin: auto 0 0; border-radius: 22px 22px 0 0; border-bottom: 0; max-height: 88%; padding: 6px var(--wz-space-4) calc(var(--wz-space-4) + env(safe-area-inset-bottom, 0px)); }
+  .wz-sheet[open] { animation: wz-sheet-up 220ms var(--ease, ease-out); }
+  .wz-sheet-grip { display: block; width: 40px; height: 5px; margin: 4px auto 10px; border-radius: 3px; background: var(--line-2); touch-action: none; }
+}
+@keyframes wz-sheet-up { from { transform: translateY(40px); opacity: .6; } }
+
+/* Shared control variants; do not redraw in apps. */
+.wz-button.destructive { background: color-mix(in srgb, var(--wz-danger) 16%, var(--wz-base)); color: var(--wz-danger); border: 1px solid var(--wz-danger); }
+.wz-icon-button { display: inline-grid; place-items: center; min-width: var(--wz-target); min-height: var(--wz-target); border-radius: var(--wz-radius-tile); background: var(--wz-surface); color: var(--wz-text); }
+.wz-icon-button svg { width: var(--wz-icon-size); height: var(--wz-icon-size); }
+.wz-pill.error { color: var(--wz-danger); }
+
+/* Captioned media actions reuse the same target; no opaque tile over imagery. */
+.wz-icon-button.ghost { background: none; }
+.wz-icon-button.caption { display: inline-flex; flex-direction: column; justify-content: center; gap: var(--wz-space-1); white-space: nowrap; font-size: var(--wz-text-sm); }
+.wz-icon-button.caption :is(span, small) { font-size: var(--wz-text-sm); white-space: nowrap; }
+
+/* Native hidden state must beat authored display rules on shared controls. */
+.wz-button[hidden], .wz-row[hidden], .wz-icon-button[hidden], .wz-input[hidden] { display: none !important; }

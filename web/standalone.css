@@ -1,0 +1,3 @@
+/* Canonical standalone tokens preserve prefers-color-scheme: light. */
+@import url("standalone-tokens.css");
+html:not(.wz-hosted) body { background: var(--wz-base); }

@@ -1,0 +1,20 @@
+name: Publish to the Wizard App Index
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m unittest discover -s tests
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish (the index re-reads this repo and runs the wizard.md check)
+        run: |
+          curl -sS --fail-with-body -X POST https://apps.aiwizards.com/v1/publish \
+            -H 'content-type: application/json' \
+            -d "{\"repo\":\"${{ github.repository }}\"}"

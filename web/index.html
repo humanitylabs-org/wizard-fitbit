@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" data-app="wizard-fitbit">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <title>Fitbit</title>
+  <script src="boot.js"></script>
+  <link rel="stylesheet" href="wizard-tokens.css">
+  <link rel="stylesheet" href="wizard-ui.css">
+  <link rel="stylesheet" href="standalone.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="/wizard-os-home/core/app-client.js"></script>
+  <script defer src="wizard-sheet.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="wz-app">
+    <main class="wz-scroll" id="main">
+      <section class="hl-top" aria-label="Fitbit connection">
+        <div class="wz-conn hl-solid">
+          <div class="wz-tile hl-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="2.5"/><rect x="5.5" y="7" width="13" height="10" rx="3"/></svg></div>
+          <div class="wz-main"><b>Fitbit</b><small id="conn-line">Checking…</small></div>
+          <span id="conn-pill" class="wz-pill off">…</span>
+        </div>
+      </section>
+
+      <!-- Connected: the account, one action, details. -->
+      <section id="account" class="hl-account" hidden aria-label="Connected account">
+        <ul class="wz-list hl-solid hl-rows">
+          <li class="wz-row">
+            <span class="wz-tile hl-avatar" aria-hidden="true">F</span>
+            <span class="wz-main"><b id="acct-name">Your Fitbit</b><small id="acct-sub"></small></span>
+          </li>
+          <li class="wz-row">
+            <span class="wz-tile hl-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span>
+            <span class="wz-main"><b id="sync-title">Synced</b><small id="sync-sub"></small></span>
+          </li>
+        </ul>
+        <p id="sync-error" class="hl-warn" hidden></p>
+        <p id="scope-warn" class="hl-warn" hidden></p>
+        <p id="signin-note" class="hl-hint hl-pad" hidden></p>
+        <div class="wz-actions">
+          <button type="button" class="wz-button" id="sync-now">Sync now</button>
+          <a class="wz-button secondary" id="open-health" href="/wizard-health/">Open Health</a>
+          <button type="button" class="wz-button secondary" id="reconnect" hidden>Connect again</button>
+        </div>
+        <p class="hl-hint hl-pad">Your sleep, heart rate variability, resting heart rate and Active Zone Minutes show in the Health app. Google's API has no Fitbit Daily Readiness score, so Health shows recovery as "no score" for Fitbit.</p>
+      </section>
+
+      <!-- Guided setup: shown until Google is connected. One step open at a time. -->
+      <section id="setup" class="hl-setup" hidden aria-label="Set up Fitbit">
+        <p class="hl-lead">Connect your Fitbit or Pixel Watch in five steps. You make your own free Google developer project, so your data goes from Google straight to this box. This app collects your sleep, heart and activity data to show it in Health on this box; it is not shared anywhere else.</p>
+        <ol class="hl-steps">
+          <li class="hl-step" data-step="1">
+            <button type="button" class="hl-step-h"><span class="hl-num">1</span><span class="hl-step-t">Have your Fitbit on a Google account</span></button>
+            <div class="hl-step-b">
+              <p>Your Fitbit or Pixel Watch has to sync to a personal Google account (not a work or school one). Fitbit accounts moved to Google accounts in 2026. Fitbit Premium is not needed.</p>
+              <p class="hl-hint">Still on an old Fitbit account? <a id="move-link" target="_blank" rel="noopener noreferrer">How to move it to Google</a>. No device yet? <a id="signup-link" target="_blank" rel="noopener noreferrer">See Fitbit and Pixel devices</a>.</p>
+              <p class="hl-hint">Good to know: Google's API does not include Fitbit's Daily Readiness or Sleep Score. Health shows your sleep, heart rate variability, resting heart rate and Active Zone Minutes instead.</p>
+              <div class="wz-actions"><button type="button" class="wz-button" data-next="2">My Fitbit uses Google</button></div>
+            </div>
+          </li>
+          <li class="hl-step" data-step="2">
+            <button type="button" class="hl-step-h"><span class="hl-num">2</span><span class="hl-step-t">Create a Google Cloud project</span></button>
+            <div class="hl-step-b">
+              <ol class="hl-sub">
+                <li>Open Google Cloud and sign in with the <b>same Google account</b> your Fitbit uses. Accept the terms if asked.</li>
+                <li>Create a project. Any name works, for example the one below. Leave Location as it is and tap <b>Create</b>.</li>
+                <li>With the new project selected, open the Google Health API page and tap <b>Enable</b>.</li>
+              </ol>
+              <div class="hl-field"><span>Project name</span><div class="hl-copy"><input id="v-name" readonly aria-label="Project name"><button type="button" class="hl-cbtn" data-copy="v-name">Copy</button></div></div>
+              <div class="wz-actions">
+                <a class="wz-button" id="project-link" target="_blank" rel="noopener noreferrer">Create a project</a>
+                <a class="wz-button secondary" id="api-link" target="_blank" rel="noopener noreferrer">Enable Google Health API</a>
+                <button type="button" class="wz-button secondary" data-next="3">Done, next</button>
+              </div>
+            </div>
+          </li>
+          <li class="hl-step" data-step="3">
+            <button type="button" class="hl-step-h"><span class="hl-num">3</span><span class="hl-step-t">Set up Google sign-in for your project</span></button>
+            <div class="hl-step-b">
+              <ol class="hl-sub">
+                <li>Open <b>Google Auth Platform</b> and tap <b>Get started</b>. App name: the one below. Support email: yours. Audience: <b>External</b>. Contact email: yours. Agree and tap <b>Create</b>.</li>
+                <li>Open <b>Audience</b>, under Test users tap <b>Add users</b>, add your own Google email and save.</li>
+                <li>Open <b>Data access</b>, tap <b>Add or remove scopes</b>, paste the three scopes below into <b>Manually add scopes</b>, tap <b>Add to table</b>, then <b>Update</b> and <b>Save</b>.</li>
+              </ol>
+              <div class="hl-field"><span>App name</span><div class="hl-copy"><input id="v-app" readonly aria-label="App name"><button type="button" class="hl-cbtn" data-copy="v-app">Copy</button></div></div>
+              <div class="hl-field"><span>Scopes: all three, read-only</span>
+                <ul class="hl-scopes" id="v-scopes"></ul>
+                <div class="hl-copy"><textarea id="v-scopes-all" rows="3" readonly spellcheck="false" aria-label="All scopes"></textarea><button type="button" class="hl-cbtn" data-copy="v-scopes-all">Copy all</button></div>
+              </div>
+              <p class="hl-plain">Leave the logo empty: a logo makes Google ask for a review you don't need for your own use. While the project is in Testing, Google ends the sign-in after 7 days; the app then asks you to tap Connect again (step 5, one minute).</p>
+              <div class="wz-actions">
+                <a class="wz-button" id="auth-platform-link" target="_blank" rel="noopener noreferrer">Open Google Auth Platform</a>
+                <a class="wz-button secondary" id="audience-link" target="_blank" rel="noopener noreferrer">Audience</a>
+                <a class="wz-button secondary" id="data-access-link" target="_blank" rel="noopener noreferrer">Data access</a>
+                <button type="button" class="wz-button secondary" data-next="4">Done, next</button>
+              </div>
+            </div>
+          </li>
+          <li class="hl-step" data-step="4">
+            <button type="button" class="hl-step-h"><span class="hl-num">4</span><span class="hl-step-t">Create the OAuth client and paste its keys</span></button>
+            <div class="hl-step-b">
+              <ol class="hl-sub">
+                <li>Open <b>Clients</b> and tap <b>Create client</b>. Application type: <b>Web application</b>. Name: any.</li>
+                <li>Under <b>Authorized redirect URIs</b> tap <b>Add URI</b> and paste the Redirect URL below. Leave Authorized JavaScript origins empty. Tap <b>Create</b>.</li>
+                <li>Google shows the <b>Client ID</b> and <b>Client secret</b>. Copy both into the form below (the secret is shown only once).</li>
+              </ol>
+              <div class="hl-field">
+                <span>Redirect URL</span>
+                <div class="hl-copy"><textarea id="v-redirect" rows="2" readonly spellcheck="false" aria-label="Redirect URL"></textarea><button type="button" class="hl-cbtn" data-copy="v-redirect">Copy</button></div>
+                <small id="redir-note" class="hl-hint"></small>
+                <button type="button" class="hl-link" id="redir-other" hidden></button>
+              </div>
+              <div class="wz-actions"><a class="wz-button secondary" id="clients-link" target="_blank" rel="noopener noreferrer">Open Clients</a></div>
+              <div id="keys-saved" class="hl-saved" hidden>
+                <p><b>Keys saved.</b> Client ID <span id="cid-hint" class="hl-mono"></span>, Client secret saved (hidden).</p>
+                <p class="hl-hint">Redirect URL: <span id="saved-redirect" class="hl-mono"></span></p>
+              </div>
+              <form id="keys-form" class="hl-form" autocomplete="off">
+                <label>Client ID<input class="wz-input" id="f-cid" name="client_id" autocomplete="off" spellcheck="false" placeholder="…apps.googleusercontent.com" required></label>
+                <label>Client secret<input class="wz-input" id="f-secret" name="client_secret" type="password" autocomplete="new-password" spellcheck="false" required></label>
+                <label>Redirect URL, exactly as added on Google<input class="wz-input" id="f-redirect" name="redirect_uri" spellcheck="false" required></label>
+                <div class="wz-actions"><button type="submit" class="wz-button" id="keys-save">Save and test keys</button></div>
+              </form>
+              <div class="wz-actions">
+                <button type="button" class="wz-button secondary" id="keys-test">Test keys</button>
+                <button type="button" class="wz-button secondary" id="keys-replace" hidden>Replace keys</button>
+                <button type="button" class="wz-button" id="keys-next" data-next="5" hidden>Next</button>
+              </div>
+              <p id="test-result" class="hl-result" role="status" aria-live="polite"></p>
+            </div>
+          </li>
+          <li class="hl-step" data-step="5">
+            <button type="button" class="hl-step-h"><span class="hl-num">5</span><span class="hl-step-t">Connect with Google</span></button>
+            <div class="hl-step-b">
+              <ol class="hl-sub" id="connect-steps">
+                <li>Tap <b>Connect with Google</b>. Google opens in a new tab of this browser. Pick the Google account your Fitbit uses.</li>
+                <li>Google says it hasn't verified the app. That's expected: it is your own project. Tap <b>Continue</b>.</li>
+                <li>Tick <b>all</b> the boxes (sleep, heart and body, activity) and tap <b>Continue</b>.</li>
+                <li id="connect-step-4">The page then won't load. That's expected: copy the whole address from the address bar (it starts with <span class="hl-mono">http://localhost:3000/callback</span>) and paste it below.</li>
+              </ol>
+              <div class="wz-actions"><button type="button" class="wz-button" id="connect">Connect with Google</button>
+                <a class="wz-button secondary" id="auth-link" target="_blank" rel="noopener noreferrer" hidden>Open Google sign-in</a></div>
+              <p id="connect-note" class="hl-hint" role="status" aria-live="polite"></p>
+              <form id="paste-form" class="hl-form" autocomplete="off">
+                <label id="paste-label">Address from the browser bar<input class="wz-input" id="f-paste" spellcheck="false" autocapitalize="none" placeholder="http://localhost:3000/callback?state=…&amp;code=…" required></label>
+                <div class="wz-actions"><button type="submit" class="wz-button" id="paste-go">Finish connecting</button></div>
+              </form>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <details class="wz-more" id="more" hidden>
+        <summary>Connection details</summary>
+        <dl class="hl-dl" id="details"></dl>
+        <div class="wz-actions">
+          <button type="button" class="wz-button secondary" id="open-keys">Replace keys</button>
+          <button type="button" class="wz-button secondary hl-danger" id="open-disconnect">Disconnect</button>
+        </div>
+      </details>
+    </main>
+    <p id="status" class="wz-status wz-sr" role="status" aria-live="polite"></p>
+  </div>
+
+  <dialog class="wz-sheet" id="sheet-keys" aria-labelledby="sk-h">
+    <h2 id="sk-h">Replace Google keys</h2>
+    <p class="hl-hint">Paste the Client ID and Client secret of your OAuth client in Google Cloud. You connect with Google again afterwards; the synced history stays.</p>
+    <form id="rk-form" class="hl-form" autocomplete="off">
+      <label>Client ID<input class="wz-input" id="rk-cid" autocomplete="off" spellcheck="false" required></label>
+      <label>Client secret<input class="wz-input" id="rk-secret" type="password" autocomplete="new-password" spellcheck="false" required></label>
+      <label>Redirect URL<input class="wz-input" id="rk-redirect" spellcheck="false" required></label>
+      <div class="wz-actions"><button type="submit" class="wz-button">Save and test</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="wz-sheet" id="sheet-disconnect" aria-labelledby="sd-h">
+    <h2 id="sd-h">Disconnect Fitbit?</h2>
+    <p>The app ends its Google access and deletes its synced copy. Health stops showing Fitbit data. Your data at Google is not touched.</p>
+    <label class="hl-checkrow"><input type="checkbox" id="sd-forget"> Also remove the saved Client ID and Client secret</label>
+    <div class="wz-actions"><button type="button" class="wz-button hl-danger-fill" id="sd-go">Disconnect</button></div>
+  </dialog>
+</body>
+</html>

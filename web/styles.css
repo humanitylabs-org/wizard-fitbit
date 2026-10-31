@@ -1,0 +1,82 @@
+/* Fitbit app styles only. Colours come from the Wizard kit variables; no colour literals. */
+[hidden] { display: none !important; }
+/* sheets sit outside .wz-app in the DOM, so they get the same roles */
+.wz-app, .wz-sheet {
+  --solid: color-mix(in srgb, var(--ink) 8%, var(--canvas));
+  --solid-2: color-mix(in srgb, var(--ink) 15%, var(--canvas));
+  --good: var(--wz-success, var(--accent));
+  --bad: var(--danger);
+  --mid: var(--wz-warning, color-mix(in oklab, var(--wz-success, var(--accent)) 45%, var(--danger)));
+}
+html[data-color-scheme="light"] .wz-app, html[data-color-scheme="light"] .wz-sheet {
+  --good: var(--wz-success-light, var(--wz-success, var(--accent)));
+  --mid: var(--wz-warning-light, var(--wz-warning, color-mix(in oklab, var(--wz-success, var(--accent)) 45%, var(--danger))));
+}
+.hl-solid { background: var(--solid); }
+.hl-top { padding-top: var(--wz-space-2); }
+.hl-logo { display: grid; place-items: center; background: var(--solid-2); color: var(--good); }
+.hl-logo svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
+.hl-pad { padding: 4px 8px 12px; margin: 0; }
+.hl-hint { color: var(--ink-3); font-size: var(--wz-text-sm, .8125rem); }
+.hl-hint a, .hl-plain a { color: var(--accent); }
+.hl-mono { font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); overflow-wrap: anywhere; }
+a.wz-button { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* ---------- guided setup ---------- */
+.hl-setup { padding: var(--wz-space-2) 0 var(--wz-space-4); }
+.hl-lead { margin: 8px 4px 12px; color: var(--ink-2); }
+.hl-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--wz-space-2); }
+.hl-step { border: 1px solid var(--line); border-radius: var(--r); background: var(--solid); overflow: hidden; }
+.hl-step-h { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 10px 14px; text-align: left; font-weight: 650; }
+.hl-num { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--solid-2); color: var(--ink-2); font-size: var(--wz-text-sm, .8125rem); font-weight: 750; }
+.hl-step.open .hl-num { background: var(--accent); color: var(--on-accent); }
+.hl-step.done .hl-num { color: var(--good); }
+.hl-step.done .hl-num::before { content: "\2713"; }
+.hl-step.done .hl-num { font-size: 0; }
+.hl-step.done .hl-num::before { font-size: 0.9375rem; }
+.hl-step.done.open .hl-num { color: var(--on-accent); }
+.hl-step-b { display: none; padding: 0 14px 14px 54px; }
+.hl-step.open .hl-step-b { display: block; }
+.hl-step-b > p:first-child { margin-top: 0; }
+.hl-sub { margin: 0 0 4px; padding-left: 18px; display: grid; gap: 6px; }
+.hl-field { display: grid; gap: 6px; margin: 12px 0; }
+.hl-field > span { font-size: var(--wz-text-sm, .8125rem); font-weight: 650; color: var(--ink-2); }
+.hl-plain { margin: 0; color: var(--ink-2); font-size: var(--wz-text-md, .875rem); }
+.hl-copy { display: flex; gap: 8px; align-items: stretch; }
+.hl-copy textarea { flex: 1; min-width: 0; resize: none; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); color: var(--ink); font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); line-height: 1.35; overflow-wrap: anywhere; }
+.hl-copy input { flex: 1; min-width: 0; height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); color: var(--ink); font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); }
+.hl-cbtn { flex: none; min-width: 72px; min-height: 44px; padding: 0 14px; border-radius: var(--r-tile); border: 1px solid var(--line-2); background: var(--solid-2); color: var(--ink); font-weight: 650; }
+.hl-scopes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.hl-scopes .wz-chip { font-family: var(--wz-font-mono, monospace); font-size: 0.78125rem; background: var(--solid-2); }
+.hl-form { display: grid; gap: 10px; }
+.hl-form label { display: grid; gap: 6px; font-size: var(--wz-text-sm, .8125rem); font-weight: 650; color: var(--ink-2); }
+.hl-form .wz-input { flex: none; height: 46px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); font-weight: 400; color: var(--ink); }
+.hl-saved p { margin: 0 0 6px; }
+.hl-result { margin: 4px 0 0; font-weight: 650; }
+.hl-result:empty { display: none; }
+.hl-result[data-kind="valid"] { color: var(--good); }
+.hl-result[data-kind="invalid"] { color: var(--bad); }
+.hl-result[data-kind="unknown"] { color: var(--mid); }
+@container wz-app (max-width: 480px) { .hl-step-b { padding-left: 14px; } }
+
+/* ---------- connection details ---------- */
+.hl-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 4px 8px 8px; }
+.hl-dl dt { color: var(--ink-3); }
+.hl-dl dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+/* skins style .wz-button after this file (higher specificity), so the danger tint needs !important */
+html .wz-button.hl-danger { color: var(--bad) !important; border-color: color-mix(in srgb, var(--bad) 45%, transparent) !important; }
+html .wz-button.hl-danger-fill { background: var(--bad) !important; color: var(--on-accent) !important; border-color: transparent !important; }
+.hl-checkrow { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.hl-checkrow input { width: 20px; height: 20px; accent-color: var(--accent); }
+
+
+/* ---------- connected account ---------- */
+.hl-account { display: grid; gap: var(--wz-space-2); padding: var(--wz-space-2) 0; }
+.hl-rows { border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.hl-rows .wz-row { cursor: default; }
+.hl-avatar { display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 22%, var(--canvas)); color: var(--ink); font-weight: 750; }
+.hl-icon { display: grid; place-items: center; background: var(--solid-2); color: var(--ink-2); }
+.hl-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hl-warn { margin: 0; padding: 10px 12px; border-radius: var(--r-tile); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--ink); font-size: 0.84375rem; }
+.hl-link { justify-self: start; min-height: 36px; padding: 0; color: var(--accent); font-size: var(--wz-text-sm, .8125rem); font-weight: 650; text-align: left; text-decoration: underline; text-underline-offset: 3px; }
+.hl-sub li[hidden] { display: none !important; }

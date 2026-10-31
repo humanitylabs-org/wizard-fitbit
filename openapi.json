@@ -1,0 +1,240 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Fitbit connector API",
+    "version": "0.1.0",
+    "description": "Box-local API of the Fitbit connector (Google Health API data; contract wizard.health-data/1, docs/health-data-contract.md). Responses never include keys or tokens."
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "Health check: version, connection status, last sync",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/status": {
+      "get": {
+        "summary": "Contract status (wizard.health-data/1): source identity, status, account, dataset id, last/next sync, history span, counts, scales; plus this app's setup state",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/days": {
+      "get": {
+        "summary": "Contract read, box-only: normalized day records oldest first, paged; changed_since returns only changed days",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "YYYY-MM-DD inclusive"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "YYYY-MM-DD inclusive"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "days per page, default 100, max 500"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "next_page from the previous reply"
+          },
+          {
+            "name": "changed_since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cursor from an earlier reply; empty = everything"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/setup": {
+      "get": {
+        "summary": "Setup guide values (Google Cloud links, scopes, redirect suggestion, whether keys are saved; never the keys)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/keys": {
+      "post": {
+        "summary": "Save Client ID, Client secret and Redirect URL",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/keys/test": {
+      "post": {
+        "summary": "Test the saved keys at Google's token endpoint",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/keys/forget": {
+      "post": {
+        "summary": "Delete the saved keys and sign-in",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oauth/start": {
+      "post": {
+        "summary": "Start a Google sign-in; returns the consent address to open in the owner's browser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oauth/finish": {
+      "post": {
+        "summary": "Finish a sign-in with the address the browser landed on ({\"url\": ...})",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sync": {
+      "post": {
+        "summary": "Pull new Google data now",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/disconnect": {
+      "post": {
+        "summary": "Sign out of Google and delete the synced copy ({\"forget_keys\": bool})",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
