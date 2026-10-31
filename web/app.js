@@ -297,7 +297,7 @@ function poll(ms, times) {
 if (!window.WizardApp || WizardApp.version !== 1) {
   say('Wizard system functions are unavailable. Open Fitbit through Wizard.', 'error');
 } else {
-  WizardApp.ready({ name: 'wizard-fitbit', version: '0.1.0' });
+  WizardApp.ready({ name: 'wizard-fitbit', version: '0.1.1' });
   WizardApp.back.register({ canGoBack: () => reconnecting && live(), back: () => { if (!(reconnecting && live())) return false; reconnecting = false; render(); return true; } });
 }
 refresh().then(() => poll(S && S.status === 'syncing' ? 3000 : 60000, S && S.status === 'syncing' ? 1200 : 1e9));

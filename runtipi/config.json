@@ -10,8 +10,8 @@
     "network"
   ],
   "description": "Connect your Fitbit or Pixel Watch with a guided setup inside the app. You need your own developer credentials: a free Google Cloud project with the Google Health API enabled and a Web OAuth client (the app shows every step with copy buttons). The app keeps a private synced copy and offers it read-only to other apps on this box through the health-data contract; the Health app shows it. No readiness score (Google's API has none). Keys and sign-in stay in the app.",
-  "tipi_version": 1,
-  "version": "0.1.0",
+  "tipi_version": 2,
+  "version": "0.1.1",
   "source": "https://github.com/oscarhenrycollins/wizard-fitbit",
   "exposable": false,
   "supported_architectures": [
@@ -19,7 +19,7 @@
     "arm64"
   ],
   "created_at": 1793437878000,
-  "updated_at": 1793437878000,
+  "updated_at": 1793438256000,
   "dynamic_config": true,
   "min_tipi_version": "4.8.0",
   "uid": 1000,

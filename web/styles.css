@@ -43,7 +43,7 @@ a.wz-button { display: inline-flex; align-items: center; text-decoration: none; 
 .hl-field > span { font-size: var(--wz-text-sm, .8125rem); font-weight: 650; color: var(--ink-2); }
 .hl-plain { margin: 0; color: var(--ink-2); font-size: var(--wz-text-md, .875rem); }
 .hl-copy { display: flex; gap: 8px; align-items: stretch; }
-.hl-copy textarea { flex: 1; min-width: 0; resize: none; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); color: var(--ink); font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); line-height: 1.35; overflow-wrap: anywhere; }
+.hl-copy textarea { field-sizing: content; max-height: 14rem; flex: 1; min-width: 0; resize: none; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); color: var(--ink); font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); line-height: 1.35; overflow-wrap: anywhere; }
 .hl-copy input { flex: 1; min-width: 0; height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--r-tile); background: var(--solid-2); color: var(--ink); font-family: var(--wz-font-mono, monospace); font-size: var(--wz-text-sm, .8125rem); }
 .hl-cbtn { flex: none; min-width: 72px; min-height: 44px; padding: 0 14px; border-radius: var(--r-tile); border: 1px solid var(--line-2); background: var(--solid-2); color: var(--ink); font-weight: 650; }
 .hl-scopes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }

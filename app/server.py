@@ -42,7 +42,7 @@ from urllib.parse import parse_qs, quote, urlencode, urlsplit
 ROOT = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path(os.environ.get('APP_ROOT', '.')).resolve()
 DATA = Path(os.environ.get('DATA_DIR', ROOT / '.data'))
 APP_ID = 'wizard-fitbit'
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 PREFIX = '/' + APP_ID
 PORT = os.environ.get('PORT', '8830')
 AUTH_URL = os.environ.get('FITBIT_AUTH_URL', 'https://accounts.google.com/o/oauth2/v2/auth')
