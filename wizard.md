@@ -4,7 +4,7 @@ id: wizard-fitbit
 name: Fitbit
 type: external
 category: system
-version: 0.1.1
+version: 0.1.2
 summary: Connect a Fitbit or Pixel Watch (needs your own free Google developer project). Health gets sleep, HRV, resting heart rate, activity.
 tags: [data]
 license: GPL-3.0-only
@@ -35,6 +35,9 @@ system: true
 uses: []
 needs: []
 health: /healthz
+switches:
+  contract: wizard.app-switches/1
+  path: /api/switches
 ---
 
 # Fitbit
