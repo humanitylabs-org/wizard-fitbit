@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Fitbit connector API",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Box-local API of the Fitbit connector (Google Health API data; contract wizard.health-data/1, docs/health-data-contract.md). Responses never include keys or tokens."
   },
   "paths": {
